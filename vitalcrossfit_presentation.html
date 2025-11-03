@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitalCrossfit - Presentación</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
+
+        .presentation {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100vh;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px 100px 20px;
+            /* Reducido el padding inferior para los botones */
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .slide.active {
+            display: flex;
+            animation: fadeIn 0.8s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            /* Reducido padding interno */
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.8s ease;
+            max-height: 90vh;
+            /* Limitar altura máxima */
+            overflow-y: auto;
+            /* Scroll interno si es necesario */
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            font-size: 3.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 800;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            color: #764ba2;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            color: #667eea;
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #666;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .author {
+            text-align: center;
+            color: #888;
+            font-size: 1.1em;
+            margin-top: 30px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-card h4 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .tech-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1em;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            /* Posicionado más arriba */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            /* Espacio reducido entre botones */
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 20px;
+            /* Padding reducido */
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            /* Tamaño reducido */
+            border-radius: 25px;
+            /* Bordes más redondeados */
+            font-size: 0.9em;
+            /* Texto más pequeño */
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            /* Posicionado más arriba */
+            right: 20px;
+            /* Posicionado más a la derecha */
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 15px;
+            /* Padding reducido */
+            border-radius: 25px;
+            font-weight: 600;
+            color: #667eea;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-size: 0.9em;
+            /* Texto más pequeño */
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        ul {
+            margin: 20px 0 20px 40px;
+        }
+
+        li {
+            font-size: 1.1em;
+            line-height: 2;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            font-size: 0.95em;
+        }
+
+        .architecture-diagram {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-family: monospace;
+            font-size: 1em;
+            line-height: 2;
+            border: 2px solid #667eea;
+        }
+
+        .hero-section {
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Media queries para mejor responsividad */
+        @media (max-height: 800px) {
+            .slide-content {
+                padding: 30px;
+                max-height: 85vh;
+            }
+
+            h1 {
+                font-size: 3em;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            p {
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px 10px 80px 10px;
+            }
+
+            .slide-content {
+                padding: 25px;
+            }
+
+            .controls {
+                padding: 8px 15px;
+                bottom: 15px;
+            }
+
+            button {
+                padding: 8px 20px;
+                font-size: 0.85em;
+            }
+
+            .slide-counter {
+                top: 15px;
+                right: 15px;
+                padding: 6px 12px;
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="presentation">
+        <div class="slide-counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">11</span>
+        </div>
+
+        <!-- Slide 1: Título -->
+        <div class="slide active">
+            <div class="slide-content hero-section">
+                <h1>🚀 VitalCrossfit 💪</h1>
+                <p class="subtitle">Tu E-commerce Deportivo de Próxima Generación</p>
+                <p class="author">Carlos E. Rodriguez</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: ¿Qué es? -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>¿Qué es VitalCrossfit?</h2>
+                <p style="text-align: center; font-size: 1.3em; color: #667eea; font-weight: 600;">Plataforma de
+                    E-commerce Especializada en Fitness y Crossfit</p>
+                <p style="text-align: center;">Diseñada para entusiastas del deporte, VitalCrossfit ofrece una
+                    experiencia de compra optimizada y gestión integral de productos deportivos.</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>✨ Experiencia Superior</h4>
+                        <p>Interfaz intuitiva y eficiente para una navegación fluida</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🎯 Gestión Total</h4>
+                        <p>Control completo de productos, categorías y usuarios</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🤖 Innovación</h4>
+                        <p>Integración de IA y sistema de cupones avanzado</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔒 Seguridad</h4>
+                        <p>Construcción robusta y preparada para el crecimiento</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Arquitectura -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Arquitectura del Sistema</h2>
+                <p style="text-align: center; font-weight: 600;">Estructura Robusta y Moderna</p>
+                <div class="architecture-diagram">
+                    Cliente (React) ←→ API Gateway (Express) ←→ Servicios ←→ Base de Datos (MySQL)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↑<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+                    Estado
+                    Local&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Middleware&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Modelos<br>
+                    (Context)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Auth,
+                    Uploads)&nbsp;&nbsp;&nbsp;(Sequelize)
+                </div>
+                <h3>Componentes Clave:</h3>
+                <ul>
+                    <li><strong>Frontend:</strong> React con Vite</li>
+                    <li><strong>Backend:</strong> Node.js / Express (API RESTful)</li>
+                    <li><strong>Base de Datos:</strong> MySQL (Sequelize ORM)</li>
+                    <li><strong>Autenticación:</strong> JWT con Roles</li>
+                    <li><strong>Inteligencia Artificial:</strong> Integración con Groq AI</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 4: Tecnologías -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Tecnologías de Vanguardia</h2>
+                <p style="text-align: center; font-weight: 600;">Construido con lo Mejor del Ecosistema JS</p>
+                <h3>Backend (Node.js/Express)</h3>
+                <div class="tech-stack">
+                    <span class="tech-badge">Node.js ≥18</span>
+                    <span class="tech-badge">Express 5.1.0</span>
+                    <span class="tech-badge">Sequelize 6.37.7</span>
+                    <span class="tech-badge">JWT 9.0.2</span>
+                    <span class="tech-badge">Groq SDK 0.32.0</span>
+                </div>
+                <h3>Frontend (React)</h3>
+                <div class="tech-stack">
+                    <span class="tech-badge">React 19.1.0</span>
+                    <span class="tech-badge">Vite 6.3.5</span>
+                    <span class="tech-badge">Tailwind CSS 4.1.7</span>
+                    <span class="tech-badge">Material-UI 7.3.4</span>
+                    <span class="tech-badge">Chart.js 4.5.1</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Características 1 -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>✨ Características Principales - Parte 1</h2>
+                <h3>Gestión Completa de Productos</h3>
+                <ul>
+                    <li>CRUD intuitivo para productos</li>
+                    <li>Subida múltiple de imágenes y categorización</li>
+                    <li>Sistema de ofertas y descuentos dinámicos</li>
+                    <li>Búsqueda y filtrado avanzado</li>
+                </ul>
+                <h3>Sistema de Usuarios Inteligente</h3>
+                <ul>
+                    <li>Registro y autenticación segura con roles (Bronce, Plata, Oro)</li>
+                    <li>Gestión de carrito de compras y historial de pedidos</li>
+                </ul>
+                <h3>Panel de Administración Poderoso</h3>
+                <ul>
+                    <li>Dashboard con métricas clave</li>
+                    <li>Control total sobre categorías, cupones y usuarios</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 6: Características 2 -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>✨ Características Principales - Parte 2</h2>
+                <h3>🤖 Asistente IA Especializado en Fitness</h3>
+                <ul>
+                    <li>Chatbot impulsado por Groq para consultas de entrenamiento</li>
+                    <li>Respuestas rápidas y precisas con cache</li>
+                    <li>Conocimiento enfocado en fitness y crossfit</li>
+                </ul>
+                <h3>📁 Sistema de Archivos Robusto</h3>
+                <ul>
+                    <li>Subida segura de imágenes con validaciones</li>
+                    <li>Servicio de archivos estáticos eficiente</li>
+                </ul>
+                <h3>🛒 Comercio Electrónico Completo</h3>
+                <ul>
+                    <li>Carrito de compras funcional</li>
+                    <li>Proceso de checkout optimizado</li>
+                    <li>Sistema de cupones y gestión de inventario</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 7: Seguridad -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>🔒 Seguridad </h2>
+                <p style="text-align: center; font-weight: 600;">Protegiendo tu Plataforma y Datos</p>
+                <h3>Seguridad Backend</h3>
+                <ul>
+                    <li><strong>JWT:</strong> Tokens de acceso y refresco para autenticación</li>
+                    <li><strong>Bcrypt:</strong> Hash seguro de contraseñas</li>
+                    <li><strong>Helmet:</strong> Protección contra vulnerabilidades web comunes</li>
+                    <li><strong>CORS & Rate Limiting:</strong> Control de acceso y prevención de ataques</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 8: Instalación -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>⚙️ Instalación y Ejecución</h2>
+                <p style="text-align: center; font-weight: 600;">¡Ponte en Marcha con VitalCrossfit!</p>
+                <h3>Pasos de Instalación:</h3>
+                <ol style="margin-left: 40px;">
+                    <li><strong>Prerrequisitos:</strong> Node.js (≥18), MySQL (≥8.0), pnpm</li>
+                    <li><strong>Clonar:</strong> <code>git clone &lt;repository-url&gt;</code></li>
+                    <li><strong>Backend:</strong> <code>cd backEx && pnpm install</code></li>
+                    <li><strong>Configurar:</strong> <code>cp .env.example .env</code></li>
+                    <li><strong>Frontend:</strong> <code>cd ../frontEx && pnpm install</code></li>
+                    <li><strong>Base de Datos:</strong> Crear DB y ejecutar scripts</li>
+                    <li><strong>Ejecutar:</strong> <code>pnpm run dev</code> en ambos directorios</li>
+                </ol>
+                <div style="text-align: center; margin-top: 30px; font-size: 1.2em;">
+                    <strong>Frontend:</strong> http://localhost:5173 | <strong>API:</strong> http://localhost:3000
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Próximos Pasos -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>🚀 Próximos Pasos</h2>
+                <p style="text-align: center; font-weight: 600;">Evolucionando Constantemente</p>
+                <p style="text-align: center; color: #667eea; font-size: 1.2em; margin-bottom: 30px;">Desarrollo Activo
+                    - Versión 1.0.0</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>💳 Pasarela de Pago</h4>
+                        <p>Facilitar transacciones seguras</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>⭐ Reseñas y Calificaciones</h4>
+                        <p>Fomentar la comunidad y confianza</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔔 Notificaciones Push</h4>
+                        <p>Mantener a los usuarios informados</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📱 App Móvil Nativa</h4>
+                        <p>Expandir la accesibilidad</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📊 Analytics Avanzado</h4>
+                        <p>Mejorar la toma de decisiones</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Contacto -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>📧 Contacto y Licencia</h2>
+                <h3>Soporte y Contacto</h3>
+                <p>Para cualquier incidencia o pregunta, consulta la documentación o contacta al equipo de desarrollo
+                    para soporte adicional.</p>
+                <h3>Licencia</h3>
+                <p style="text-align: center; font-size: 1.3em; color: #667eea; font-weight: 600; margin: 30px 0;">Este
+                    proyecto está bajo la Licencia MIT</p>
+                <p style="text-align: center;">Ver archivo LICENSE para más detalles</p>
+                <p class="author" style="font-size: 1.3em; margin-top: 50px;">
+                    <strong>Creador:</strong> Carlos E. Rodriguez
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 11: Final -->
+        <div class="slide">
+            <div class="slide-content hero-section">
+                <h1>¡Gracias! 🙏</h1>
+                <p class="subtitle" style="font-size: 2em; margin: 30px 0;">VitalCrossfit</p>
+                <p style="text-align: center; font-size: 1.5em; color: #667eea; font-weight: 600;">Potenciando tu
+                    entrenamiento, un producto a la vez. 💪</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="prevBtn" onclick="changeSlide(-1)">← Anterior</button>
+        <button id="nextBtn" onclick="changeSlide(1)">Siguiente →</button>
+    </div>
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+        });
+
+        showSlide(0);
+    </script>
+</body>
+
+</html>
