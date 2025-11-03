@@ -1,4 +1,4 @@
-# VitalCrossfit - Plataforma E-commerce Fitness
+# VitalCrossfit - Plataforma E-commerce Fitness 💪
 
 Este código es una presentación web interactiva sobre **VitalCrossfit**, una plataforma de e-commerce especializada en fitness y crossfit.
 
